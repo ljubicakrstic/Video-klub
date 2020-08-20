@@ -2,10 +2,10 @@
 
 session_start();
 
-    if(empty($_GET['id'])){                                                     //ako nisam kliknula na link 'info' id u getu nije setovan i vraca me na index
+    if(empty($_GET['id'])){                                                     
         header("Location: index.php");
     }
-    $id=$_GET['id'];                                                            //bespotreban dupli posao, u svakom slucaju pamtim id filma i u sesiji                                               
+    $id=$_GET['id'];                                                                                                           
     $_SESSION['id']=$id;
     
     $conn=mysqli_connect("localhost","root","","videoklub1")
@@ -14,7 +14,7 @@ session_start();
     $sql="select sifK, kaseta.Duzina                                          
          from kaseta join sadrzi using(SifK) join film using(SifF)
          where sifK not in(select sifK from pozajmica)
-         and SifF = $id";                                                       //dohvatam sve kasete za taj film koje nisu iznajmljene
+         and SifF = $id";                                                       
     
     $kasete= mysqli_query($conn, $sql);
     
@@ -22,7 +22,7 @@ session_start();
         Cena, zanr.Naziv as Zanr 
         FROM film join zanr using(SifZ)
         where SifF=$id";
-    $filmTabela= mysqli_query($conn, $sqlFilm);                                 //dohvatam sve podatke za taj film
+    $filmTabela= mysqli_query($conn, $sqlFilm);                                 
     $film= mysqli_fetch_assoc($filmTabela);
     if($film==null){
         header("Location: index.php");
@@ -30,11 +30,6 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -42,7 +37,7 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
-        <?php                                                                   //ispisujem sve informacije o tom filmu
+        <?php                                                                   
             echo "Naziv: ".$film['Naziv']."<br>";
             echo "Duzina: ".$film['Duzina']."<br>";
             echo "Ocena: ".$film['Ocena']."<br>";
@@ -50,10 +45,10 @@ and open the template in the editor.
             echo "Zanr: ".$film['Zanr']."<br>";
             
             
-            if(mysqli_num_rows($kasete)==0){                                    //ako nema nijedne kasete koja nije iznajmljena
+            if(mysqli_num_rows($kasete)==0){                                    
                 echo "Nema nijedne kasete";
             }
-            else {                                                              //ako ima, ispisujem sifru kasete, duzinu kasete i link 'iznajmi' pored svake kasete. U get ugrradjujem id filma i id kasete
+            else {                                                              
             echo "Kaseta, Duzina<br>";
             while($kaseta= mysqli_fetch_array($kasete)){
                 echo $kaseta[0]." ".$kaseta[1]." <a href='iznajmi.php?idFilm=$id&idKas=$kaseta[0]'>Iznajmi</a><br/>";
@@ -61,12 +56,12 @@ and open the template in the editor.
             }
         ?>
         <br/><br/>
-        <a href="promeni_film.php?id=<?php echo $film['SifF'] ?>">              <!-- imam link za 'promeni' koji vodi na promeni film i pamti id u getu-->
+        <a href="promeni_film.php?id=<?php echo $film['SifF'] ?>">              
             Promeni
         </a>
         
         <br/><br/>
-        <a href="oceni_film.php?id=<?php echo $id ?>&oceni=1">Oceni film</a>    <!-- imam link za 'oceni film' koji vodi na oceni film stranicu-->
+        <a href="oceni_film.php?id=<?php echo $id ?>&oceni=1">Oceni film</a>    
         
     </body>
 </html>

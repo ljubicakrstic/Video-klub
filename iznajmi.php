@@ -2,42 +2,42 @@
 
 session_start();
 
-$korIme = $_SESSION["username"];                                                //izvlacim korisnicko ime iz sesije
+$korIme = $_SESSION["username"];                                                
 
 $conn=mysqli_connect("localhost","root","","videoklub1")
             or die("Konekcija neuspesna");
 
 $sql = "select sifC from clan
-       where korisnickoime = '$korIme'";                                        //da bih preko njega dosla do sifre clana
+       where korisnickoime = '$korIme'";                                        
 $sqlKorisnik = mysqli_query($conn, $sql);
 $Korisnik = mysqli_fetch_array($sqlKorisnik);
 $sifC = $Korisnik[0];
 
 
-$sql = "select max(SifP) from pozajmica";                                       //pravim sifru pozajmice jer nije AI (mozda i jeste, nisam proveravala haha)
+$sql = "select max(SifP) from pozajmica";                                       
 $sqlPozajmica = mysqli_query($conn, $sql);
 $SifP = (int)mysqli_fetch_row($sqlPozajmica)[0];
 $SifP++;
 
-$sifFi = $_GET['idFilm']??"";                                                   //izvlacim sifru filma i sifru kasete iz geta 
+$sifFi = $_GET['idFilm']??"";                                                   
 $sifKa = $_GET['idKas']??"";
 
-if(isset($_POST['iznajmi'])){                                                   //ako sam kliknula 'iznajmi'...
+if(isset($_POST['iznajmi'])){                                                   
     
-    if(empty($_POST['brDana'])){                                                //ako je broj dana prazan, ispisuje poruku da morate uneti broj dana duh
+    if(empty($_POST['brDana'])){                                                
         $poruka = "Morate uneti broj dana!";
     }else{
         
-    $brDana = $_POST['brDana'];                                                 //u suprotnom, pamtim broj dana i siff i sifk iz posta
-    $sifF = $_POST['sifF'];                                                     // to vucem iz hidden polja, ne mogu direktno iz geta zato sto se url menja onog trenutka kad kliknem nesto
-    $sifK = $_POST['sifK'];                                                     //a kad se promeni url, ode get. Znavi pamtim podatke iz geta, upisujem ih u hidden, i onda ih odatle izlacim preko posta
+    $brDana = $_POST['brDana'];                                                 
+    $sifF = $_POST['sifF'];                                                     
+    $sifK = $_POST['sifK'];                                                     
     
-    $sql = "INSERT INTO pozajmica values($SifP, $sifK, $sifF, $sifC, $brDana)";  //sql upit za insert svih podataka koje sam skupila gore
+    $sql = "INSERT INTO pozajmica values($SifP, $sifK, $sifF, $sifC, $brDana)";  
     $sqlIznajmi = mysqli_query($conn, $sql);
     
-    if($sqlIznajmi){                                                            //ako je upit izvrsen, poruka je ovo:
+    if($sqlIznajmi){                                                            
         $poruka = "Uspesno ste iznajmili film <br/><br/><a href='index.php'>Vrati se na pocetnu stranu</a>";
-    }else {                                                                     //ako nije izvrsen, poruka je ovo
+    }else {                                                                     
         $poruka = "Film nije iznajmljen";
     }
     
@@ -63,13 +63,13 @@ if(isset($_POST['iznajmi'])){                                                   
         <input type="submit" name="iznajmi" value="Iznajmi"> 
     </form>
         <?php
-        }echo $poruka??"";                                                      //ispisujem poruku ako je setovana, ili nista ako nije
+        }echo $poruka??"";                                                      
         ?>
         <br/><br/>
         
         <br/>
         <form name="logOutForm" action="logout.php" method="POST">
-            <input type="submit" name="logout" value="Log out">                 <!-- dugme za logout-->
+            <input type="submit" name="logout" value="Log out">                 
             
         </form>
         

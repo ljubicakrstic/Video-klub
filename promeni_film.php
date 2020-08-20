@@ -73,9 +73,7 @@ if (!isset($_POST['promeni'])) {
                         else 
                             echo "<option value='$idZanr'>
                                 $nazivZanr</option>";
-                      // druga varijanta  
-                      //  echo "<option value='".$zanr['SifZ'].
-                      //          "'>".$zanr['Naziv']."</option>";
+        
                     }
                 
                 ?>
